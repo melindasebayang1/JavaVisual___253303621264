@@ -1,16 +1,21 @@
 # Character Manager — TP14 (Java Visual SIH-6406)
 Pada sprint ini (v0.5 ke v0.6), aplikasi Character Manager ditingkatkan dari sekadar penampil data menjadi alat kerja interaktif yang mampu menerima input karakter baru melalui CharacterFormPanel di wilayah WEST (JTextField, JComboBox, dan JSpinner). Perubahan juga dilakukan pada package model untuk menegakkan aturan bisnis di konstruktor Character serta pemeriksaan keunikan nama di CharacterManager, disertai validasi berlapis dan pembaruan daftar otomatis lewat refreshList().
 
-Screenshot
-Error nama kosong (pesan inline merah, border merah, kursor kembali ke field nama): ![alt text](tp14-error-kosong.png)
+## Screenshot
+Error nama kosong (pesan inline merah, border merah, kursor kembali ke field nama):
+![alt text](tp14-error-kosong.png)
 
-Error nama sudah dipakai (deteksi duplikat case-insensitive): ![alt text](tp14-error-duplikat.png)
+Error nama sudah dipakai (deteksi duplikat case-insensitive):
+ ![alt text](tp14-error-duplikat.png)
 
-Input valid berhasil disimpan (kartu baru langsung muncul & pesan hijau): ![alt text](tp14-sukses.png)
+Input valid berhasil disimpan (kartu baru langsung muncul & pesan hijau):
+ ![alt text](tp14-error-duplikat-1.png)
 
-Bukti Mini-Challenge (aturan konsistensi MAGE maksimal level 60 dari Model): ![alt text](tp14-minichallenge.png)
+Bukti Mini-Challenge (aturan konsistensi MAGE maksimal level 60 dari Model): 
+![alt text](tp14-minichallenge.png)
 
-Bukti aturan baru (larangan spasi ganda di View): !](tp14-error-spasi-ganda.png)
+Bukti aturan baru (larangan spasi ganda di View):
+![alt text](tp14-error-spasi-ganda.png)
 
 ## Tabel Uji (Matriks Input)
 No	Input	Hasil Diharapkan	Hasil Nyata	Lapisan yang Menangkap
@@ -32,7 +37,8 @@ Catatan Pengamatan & Tindakan Perbaikan:
 
 Perilaku JSpinner pada input 500: SpinnerNumberModel(1, 1, 99, 1) menjaga rentang saat commitEdit() dipanggil sehingga angka di luar rentang otomatis dikembalikan ke nilai sah terakhir atau batas maksimum 99[cite: 1]. Jika ada jalur lain di luar form yang mencoba membuat karakter level 500, konstruktor Character tetap menolaknya dengan IllegalArgumentException[cite: 1].
 Teks error terpotong pada aturan spasi ganda: Pada pengujian kasus ke-11, pesan "Nama tidak boleh mengandung spasi ganda" terpotong elipsis (...) karena lebar CharacterFormPanel ditetapkan 250px[cite: 1, 8]. Tindakan perbaikannya adalah mempersingkat teks pesan menjadi "Tidak boleh ada spasi ganda" agar seluruh kalimat terbaca utuh di dalam panel.
-Dua Aturan Validasi Baru & Alasan Penempatannya
+
+## Dua Aturan Validasi Baru & Alasan Penempatannya
 Larangan Spasi Ganda pada Nama — Diletakkan di View (CharacterFormPanel.validateName)
 
 Implementasi: Menambahkan pemeriksaan if (name.contains("  ")) return "Nama tidak boleh mengandung spasi ganda"; di dalam validateName().
@@ -41,10 +47,11 @@ Batas Maksimal 15 Karakter dalam Daftar — Diletakkan di Model (CharacterManage
 
 Implementasi: Menambahkan pemeriksaan if (getTotalCharacters() >= 15) throw new IllegalArgumentException("Daftar penuh (maksimal 15 karakter)"); pada awal method addCharacter().
 Alasan: Kapasitas penyimpanan koleksi karakter adalah aturan bisnis (domain rule) milik CharacterManager yang tetap masuk akal meskipun aplikasi berjalan tanpa GUI[cite: 1]. Dengan meletakkannya di Model, aturan ini melindungi daftar dari sumber data mana pun dan pesannya otomatis ditangkap oleh catch (IllegalArgumentException ex) di form tanpa mengubah kode CharacterFormPanel[cite: 1].
-Kompromi Arsitektur Sementara
+
+## Kompromi Arsitektur Sementara
 Pada Sprint #6 ini terdapat dua kompromi sementara yang sengaja dilakukan agar fokus tetap pada alur input dan validasi berlapis[cite: 1]. Pertama, tombol Simpan dan nameField menggunakan addActionListener(e -> onSave()) secara langsung di dalam kelas View, bukan melalui kelas pengendali terpisah[cite: 1]. Kedua, CharacterFormPanel memanggil manager.addCharacter() secara langsung sehingga View masih berinteraksi langsung dengan Model[cite: 1]. Kedua kompromi ini akan dirapikan pada Pertemuan 9 dengan memindahkan penanganan event dan koordinasi pembaruan data ke lapisan Controller[cite: 1].
 
-Struktur Panel Bersarang (MainWindow v0.6)
+## Struktur Panel Bersarang (MainWindow v0.6)
 MainWindow menggunakan BorderLayout dengan lima wilayah yang terisi penuh[cite: 1]:
 
 NORTH: header (BorderLayout) yang memuat judul aplikasi di WEST dan countLabel di EAST[cite: 1].
@@ -61,7 +68,9 @@ MainWindow (JFrame, BorderLayout)
 │       └── NORTH : cardsPanel (GridLayout 0x1) -> kartu karakter (JLabel)
 ├── EAST   : legend (BoxLayout Y_AXIS) -> strut, chip per CharacterType, glue
 └── SOUTH  : status (FlowLayout LEFT) -> statusLabel
-Struktur Folder
+
+## Struktur Folder
+```text
 CharacterManager/
 ├── src/
 │   └── com/
@@ -92,10 +101,12 @@ CharacterManager/
 ├── tp14-error-spasi-ganda.png
 ├── tp14-minichallenge.png
 └── tp14-sukses.png
-Identitas & Analisis Bagian D
+```
+
+## Identitas & Analisis Bagian D
 Nama : Melinda Sabella Br Sebayang
 
 Nim : 253303621264
 
-Analisis Input & Validasi (Google Docs):
+## Analisis Input & Validasi (Google Docs):
 https://drive.google.com/file/d/1ehh6NbKuTOEipmfaK5upkwsbfVV9-k8s/view?usp=drivesdk

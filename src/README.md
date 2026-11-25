@@ -10,7 +10,7 @@ Input valid berhasil disimpan (kartu baru langsung muncul & pesan hijau): ![alt 
 
 Bukti Mini-Challenge (aturan konsistensi MAGE maksimal level 60 dari Model): ![alt text](tp14-minichallenge.png)
 
-Bukti aturan baru (larangan spasi ganda di View): ![alt text](tp14-error-spasi-ganda.png)
+Bukti aturan baru (larangan spasi ganda di View): !](tp14-error-spasi-ganda.png)
 
 ## Tabel Uji (Matriks Input)
 No	Input	Hasil Diharapkan	Hasil Nyata	Lapisan yang Menangkap
